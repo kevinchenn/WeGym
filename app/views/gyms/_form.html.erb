@@ -1,0 +1,45 @@
+<%= form_for(@gym) do |f| %>
+  <% if @gym.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@gym.errors.count, "error") %> prohibited this gym from being saved:</h2>
+
+      <ul>
+      <% @gym.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :owner %>
+    <%= f.text_field :owner %>
+  </div>
+  <div class="field">
+    <%= f.label :email %>
+    <%= f.email_field :email %>
+  </div>
+  <div class="field">
+    <%= f.label :password %>
+    <%= f.password_field :password %>
+  </div>
+  <div class="field">
+    <%= f.label :gym %> <p>Name of your gym</p>
+    <%= f.text_field :gym %>
+  </div>
+  <div class="field">
+    <%= f.label :price %> <p>Price of membership</p>
+    <%= f.number_field :price %>
+  </div>
+  <div class="field">
+    <%= f.label :period %> <p>(Weekly, Monthly, Quarterly, Yearly)</p>
+    <%= f.text_field :period %>
+  </div>
+  <div class="field">
+    <%= f.label :plan %> <p>Name of your plan</p>
+    <%= f.text_field :plan %>
+  </div>
+  <div class="actions">
+    <%= f.submit(:class  => "btn btn-primary") %>
+  </div>
+<% end %>

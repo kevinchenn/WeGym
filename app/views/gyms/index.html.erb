@@ -1,0 +1,39 @@
+<h1>Listing gyms</h1>
+
+<table>
+  <tr>
+    <th>Owner</th>
+    <th>Email</th>
+    <th>Password hash</th>
+    <th>Gym</th>
+    <th>Price</th>
+    <th>Period</th>
+    <th>Wepay access token</th>
+    <th>Wepay account</th>
+    <th>Plan</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @gyms.each do |gym| %>
+  <tr>
+    <td><%= gym.owner %></td>
+    <td><%= gym.email %></td>
+    <td><%= gym.password_hash %></td>
+    <td><%= gym.gym %></td>
+    <td><%= gym.price %></td>
+    <td><%= gym.period %></td>
+    <td><%= gym.wepay_access_token %></td>
+    <td><%= gym.wepay_account_id %></td>
+    <td><%= gym.plan %></td>
+    <td><%= link_to 'Show', gym %></td>
+    <td><%= link_to 'Edit', edit_gym_path(gym) %></td>
+    <td><%= link_to 'Destroy', gym, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Gym', new_gym_path %>

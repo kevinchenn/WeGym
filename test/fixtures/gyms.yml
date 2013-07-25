@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  owner: MyString
+  email: MyString
+  password_hash: MyString
+  gym: MyString
+  price: MyString
+  period: MyString
+  wepay_access_token: MyString
+  wepay_account_id: 1
+  plan: MyString
+
+two:
+  owner: MyString
+  email: MyString
+  password_hash: MyString
+  gym: MyString
+  price: MyString
+  period: MyString
+  wepay_access_token: MyString
+  wepay_account_id: 1
+  plan: MyString

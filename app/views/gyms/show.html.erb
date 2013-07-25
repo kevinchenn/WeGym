@@ -1,0 +1,44 @@
+
+<h1 class="floatLeft"><%= @gym.gym %></h1>
+<% if (@is_admin && (!@gym.has_valid_wepay_access_token? || !@gym.has_wepay_account?)) %>
+  <p>
+    <b>Please create an account to manage your money: </b>
+  <% redirect_uri = url_for(:controller => 'gyms', :action => 'oauth', :gym_id => @gym.id, :host => request.host_with_port) %>
+    <a class="btn btn-primary" href="<%= @gym.wepay_authorization_url(redirect_uri) %>">Click here to create your account</a>
+  </p>
+<% end %>
+
+<p>
+  <b>Owner:</b>
+  <%= @gym.owner %>
+</p>
+
+<p>
+  <b>Email:</b>
+  <%= @gym.email %>
+</p>
+
+<p>
+  <b>Gym:</b>
+  <%= @gym.gym %>
+</p>
+
+<p>
+  <b>Price:</b>
+  <%= @gym.price %>
+</p>
+
+<p>
+  <b>Period:</b>
+  <%= @gym.period %>
+</p>
+
+<p>
+  <b>Plan:</b>
+  <%= @gym.plan %>
+</p>
+
+<% if (@is_admin) %>
+<%= link_to 'Edit', edit_gym_path(@gym) %>
+<% end %> |
+<%= link_to 'Back', gyms_path %>
