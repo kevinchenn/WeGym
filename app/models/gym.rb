@@ -53,6 +53,11 @@ class Gym < ActiveRecord::Base
   	self.wepay_account_id != 0 && !self.wepay_account_id.nil?
 	end
 
+	def has_wepay_access_token?
+		!self.wepay_access_token.nil?
+	end
+
+
 	# makes an api call to WePay to check if current access token for GYM is still valid
 	def has_valid_wepay_access_token?
 	  if self.wepay_access_token.nil?
@@ -64,7 +69,7 @@ class Gym < ActiveRecord::Base
 
 	# creates a WePay account for this owner with the Gym's name
 	def create_wepay_account
-	  if self.has_valid_wepay_access_token? && !self.has_wepay_account?
+	  if self.has_wepay_access_token? && !self.has_wepay_account?
 	    params = { :name => self.gym, :description => "Gym selling " + self.plan + " membership"}			
 	    response = Wegym::Application::WEPAY.call("/account/create", self.wepay_access_token, params)
 
