@@ -1,5 +1,5 @@
 class WelcomeController < ApplicationController
   def index
-  	@gym = Gym.all
+  	@gyms = Gym.all
   end
 end
