@@ -64,4 +64,10 @@ Wegym::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
+
+  #App specific information
+  CLIENT_ID = 55030
+  CLIENT_SECRET = "8f6b12d885"
+  USE_STAGE = true
+  WEPAY = WePay.new(CLIENT_ID, CLIENT_SECRET, USE_STAGE)
 end
