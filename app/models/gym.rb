@@ -64,7 +64,7 @@ class Gym < ActiveRecord::Base
 
 	# creates a WePay account for this owner with the Gym's name
 	def create_wepay_account
-	  if self.has_wepay_access_token? && !self.has_wepay_account?
+	  if self.has_valid_wepay_access_token? && !self.has_wepay_account?
 	    params = { :name => self.gym, :description => "Gym selling " + self.plan + " membership"}			
 	    response = Wegym::Application::WEPAY.call("/account/create", self.wepay_access_token, params)
 
