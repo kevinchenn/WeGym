@@ -3,8 +3,8 @@
 <% if (@is_admin && (!@gym.has_valid_wepay_access_token? || !@gym.has_wepay_account?)) %>
   <p>
     <b>Please create an account to manage your money: </b>
-  <% redirect_uri = url_for(:controller => 'gyms', :action => 'oauth', :gym_id => @gym.id, :host => request.host, :protocol => 'https' ) %>
-    <a class="btn btn-primary" href="<%= @gym.wepay_authorization_url(redirect_uri) %>">Click here to create your account</a>
+  <% redirect_uri = url_for(:controller => 'gyms', :action => 'oauth', :gym_id => @gym.id, :host => request.host_with_port) %>
+      <a class="btn btn-primary" href="<%= @gym.wepay_authorization_url(redirect_uri) %>">Click here to create your account</a>
   </p>
 <% end %>
 
