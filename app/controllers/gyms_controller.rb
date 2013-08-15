@@ -68,4 +68,28 @@ class GymsController < ApplicationController
     end
   end
 
+  # GET /gyms/create_plan/1
+  def create_plan
+    if !params[:code]
+      return redirect_to('/')
+    end
+
+    redirect_uri = url_for(:controller => 'gyms', :action => 'create_plan', :gym_id => params[:gym_id], :host => request.host_with_port)
+    @gym = Gym.find(params[:gym_id])
+    begin
+      @gym.create_plan()
+    rescue Exception => e
+      redirect_to @gym, alert: e.message
+    end
+
+    if error
+      redirect_to @gym, alert: error
+    else
+      redirect_to @gym, notice: 'You successfull created a plan!'
+    end
+
+  end
+
+
+
 end

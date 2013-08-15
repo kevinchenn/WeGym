@@ -7,6 +7,13 @@
       <a class="btn btn-primary" href="<%= @gym.wepay_authorization_url(redirect_uri) %>">Click here to create your account</a>
   </p>
 <% end %>
+<% if (@is_admin && (@gym.has_valid_wepay_access_token? || @gym.has_wepay_account?)) %>
+  <p>
+    <b>Please create a subscription plan with WePay: </b>
+  <% redirect_uri = url_for(:controller => 'gyms', :action => 'create_plan', :gym_id => @gym.id, :host => request.host_with_port) %>
+      <a class="btn btn-primary" href="<%= redirect_uri %>">Click here to create your subscription plan</a>
+  </p>
+<% end %>
 
 <p>
   <b>Owner:</b>
@@ -41,4 +48,4 @@
 <% if (@is_admin) %>
 <%= link_to 'Edit', edit_gym_path(@gym) %>
 <% end %> |
-<%= link_to 'Back', gyms_path %>
+<%= link_to 'Back', root_path %>

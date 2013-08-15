@@ -57,6 +57,10 @@ class Gym < ActiveRecord::Base
 		!self.wepay_access_token.nil?
 	end
 
+	def has_created_plan?
+		!self.plan_id.nil?
+	end
+
 
 	# makes an api call to WePay to check if current access token for GYM is still valid
 	def has_valid_wepay_access_token?
@@ -82,6 +86,35 @@ class Gym < ActiveRecord::Base
 
 	  end		
 	  raise "Error - cannot create WePay account"
+	end
+
+	# creates a subscription_plan object using WePay API for this Gym
+	def create_plan
+		if self.has_created_plan?
+			return false
+		end
+
+	  # calculate app_fee as 10% of produce price
+	  app_fee = self.produce_price * 0.1
+
+	  params = { 
+	    :account_id => self.wepay_account_id,
+	    :name => self.plan, 
+	    :short_description => "Membership sold by #{self.gym}",
+	    :period => self.period,
+	    :amount => self.price,			
+	    :app_fee => app_fee,	
+	    :mode => :iframe,
+	  }
+	  response = Wefarm::Application::WEPAY.call('/subscription_plan/create', self.wepay_access_token, params)
+
+	  if !response
+	    raise "Error - no response from WePay"
+	  elsif response['error']
+	    raise "Error - " + response["error_description"]
+	  end
+
+	  return response
 	end
 
 
