@@ -90,9 +90,6 @@ class Gym < ActiveRecord::Base
 
 	# creates a subscription_plan object using WePay API for this Gym
 	def create_plan
-		if self.has_created_plan?
-			return false
-		end
 
 	  # calculate app_fee as 10% of produce price
 	  app_fee = self.produce_price * 0.1
@@ -108,13 +105,16 @@ class Gym < ActiveRecord::Base
 	  }
 	  response = Wefarm::Application::WEPAY.call('/subscription_plan/create', self.wepay_access_token, params)
 
-	  if !response
-	    raise "Error - no response from WePay"
-	  elsif response['error']
-	    raise "Error - " + response["error_description"]
-	  end
+	 	if response["subscription_plan_id"]
+	      self.plan_id = response["subscription_plan_id"]
+	      return self.save
+	    else
+	      raise "Error - " + response["error_description"]
+	    end
 
-	  return response
+	  end		
+	  raise "Error - cannot create WePay Subscription Plan"
+	  
 	end
 
 
