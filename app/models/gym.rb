@@ -110,9 +110,8 @@ class Gym < ActiveRecord::Base
 	      return self.save
 	    else
 	      raise "Error - " + response["error_description"]
-	    end
-
-	  end		
+	  end
+	
 	  raise "Error - cannot create WePay Subscription Plan"
 	  
 	end
