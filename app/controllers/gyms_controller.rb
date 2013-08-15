@@ -70,10 +70,6 @@ class GymsController < ApplicationController
 
   # GET /gyms/create_plan/1
   def create_plan
-    if !params[:code]
-      return redirect_to('/')
-    end
-
     redirect_uri = url_for(:controller => 'gyms', :action => 'create_plan', :gym_id => params[:gym_id], :host => request.host_with_port)
     @gym = Gym.find(params[:gym_id])
     begin
