@@ -30,7 +30,7 @@ class Gym < ActiveRecord::Base
 
 	# returns a url
 	def wepay_authorization_url(redirect_uri)
-	  Wegym::Application::WEPAY.oauth2_authorize_url(redirect_uri, self.email, self.owner)
+	  Wegym::Application::WEPAY.oauth2_authorize_url(redirect_uri, self.email, self.owner, "manage_accounts,view_balance,collect_payments,refund_payments,view_user,manage_subscriptions")
 	end
 
 	# takes a code returned by wepay oauth2 authorization and makes an api call to generate oauth2 token for this gym.
@@ -91,19 +91,18 @@ class Gym < ActiveRecord::Base
 	# creates a subscription_plan object using WePay API for this Gym
 	def create_plan
 
-	  # calculate app_fee as 10% of produce price
-	  app_fee = self.produce_price * 0.1
+	  # calculate app_fee as 10% of price
+	  app_fee = self.price * 0.1
 
 	  params = { 
 	    :account_id => self.wepay_account_id,
 	    :name => self.plan, 
 	    :short_description => "Membership sold by #{self.gym}",
-	    :period => self.period,
+	    :period => self.period.downcase,
 	    :amount => self.price,			
 	    :app_fee => app_fee,	
-	    :mode => :iframe,
 	  }
-	  response = Wefarm::Application::WEPAY.call('/subscription_plan/create', self.wepay_access_token, params)
+	  response = Wegym::Application::WEPAY.call('/subscription_plan/create', self.wepay_access_token, params)
 
 	 	if response["subscription_plan_id"]
 	      self.plan_id = response["subscription_plan_id"]
@@ -114,6 +113,25 @@ class Gym < ActiveRecord::Base
 	
 	  raise "Error - cannot create WePay Subscription Plan"
 	  
+	end
+
+	# creates a subscription object using WePay API for this gym
+	def create_subscription(redirect_uri)
+
+	  params = { 
+	  	:subscription_plan_id => self.plan_id,		
+	    :mode => :iframe,
+	    :redirect_uri => redirect_uri
+	  }
+	  response = Wegym::Application::WEPAY.call('/subscription/create', self.wepay_access_token, params)
+
+	  if !response
+	    raise "Error - no response from WePay"
+	  elsif response['error']
+	    raise "Error - " + response["error_description"]
+	  end
+
+	  return response
 	end
 
 

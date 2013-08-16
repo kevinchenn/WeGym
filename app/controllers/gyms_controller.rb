@@ -53,7 +53,7 @@ class GymsController < ApplicationController
       return redirect_to('/')
     end
 
-    redirect_uri = url_for(:controller => 'gyms', :action => 'oauth', :gym_id => params[:gym_id], :host => request.host_with_port)
+    redirect_uri = url_for(:controller => 'gyms', :action => 'oauth', :gym_id => params[:gym_id], :host => request.host)
     @gym = Gym.find(params[:gym_id])
     begin
       @gym.request_wepay_access_token(params[:code], redirect_uri)
@@ -70,22 +70,39 @@ class GymsController < ApplicationController
 
   # GET /gyms/create_plan/1
   def create_plan
-    redirect_uri = url_for(:controller => 'gyms', :action => 'create_plan', :gym_id => params[:gym_id], :host => request.host_with_port)
+    redirect_uri = url_for(:controller => 'gyms', :action => 'create_plan', :gym_id => params[:gym_id], :host => request.host)
     @gym = Gym.find(params[:gym_id])
     begin
       @gym.create_plan()
+      redirect_to @gym
     rescue Exception => e
+      error = e.message
       redirect_to @gym, alert: e.message
-    end
-
-    if error
-      redirect_to @gym, alert: error
-    else
-      redirect_to @gym, notice: 'You successfull created a plan!'
     end
 
   end
 
+  def subscribe
+    redirect_uri = url_for(:controller => 'gyms', :action => 'subscribe_success', :gym_id => params[:gym_id], :host => request.host_with_port)
+    @gym = Gym.find(params[:gym_id])
+    begin
+      @subscription = @gym.create_subscription(redirect_uri)
+    rescue Exception => e
+      redirect_to @gym, alert: e.message
+    end
+  end
+
+  # GET /gyms/subscribe_success/1
+  def subscribe_success
+    @gym = Gym.find(params[:gym_id])
+    if !params[:subscription_id]
+      return redirect_to @gym, alert: "Error - Subscription ID is expected"
+    end
+    if (params['error'] && params['error_description'])
+      return redirect_to @gym, alert: "Error - #{params['error_description']}"
+    end
+    redirect_to @gym, notice: "You are now subscribed! You should receive a confirmation email shortly."
+  end
 
 
 end

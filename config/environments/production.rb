@@ -70,4 +70,5 @@ Wegym::Application.configure do
   CLIENT_SECRET = "8f6b12d885"
   USE_STAGE = true
   WEPAY = WePay.new(CLIENT_ID, CLIENT_SECRET, USE_STAGE)
+  WEPAY.api_endpoint = "http://vm.wepay.com/v2"
 end

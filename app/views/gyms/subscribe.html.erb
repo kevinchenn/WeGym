@@ -1,0 +1,11 @@
+<h1>Subscribe to <%= @gym.plan %> from <%= @gym.gym %> for <%= number_to_currency(@gym.price, :unit => "$") %> This is a <%= @gym.period %> subscription</h1>
+<p><%= link_to "← back to " + @gym.owner + "'s " + @gym.gym, @gym %></p>
+
+<div id="wepay-iframe-div">
+	<script type="text/javascript" src="https://www.wepay.com/js/iframe.wepay.js">
+	</script>
+
+	<script type="text/javascript">
+		WePay.iframe_checkout("wepay-iframe-div", "<%= @subscription['subscription_uri'] %>");
+	</script>
+</div>
