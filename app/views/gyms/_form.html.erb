@@ -29,7 +29,7 @@
   </div>
   <div class="field">
     <%= f.label :price %> <p>Price of membership</p>
-    <%= f.number_field :price %>
+    <%= f.text_field :price, :value=>number_to_currency(f.object.price, :unit=>'')%>
   </div>
   <div class="field">
     <%= f.label :period %> <p>(Weekly, Monthly, Quarterly, Yearly)</p>
