@@ -53,7 +53,7 @@ class GymsController < ApplicationController
       return redirect_to('/')
     end
 
-    redirect_uri = url_for(:controller => 'gyms', :action => 'oauth', :gym_id => params[:gym_id], :host => request.host)
+    redirect_uri = url_for(:controller => 'gyms', :action => 'oauth', :gym_id => params[:gym_id], :host => request.host_with_port)
     @gym = Gym.find(params[:gym_id])
     begin
       @gym.request_wepay_access_token(params[:code], redirect_uri)
@@ -70,7 +70,7 @@ class GymsController < ApplicationController
 
   # GET /gyms/create_plan/1
   def create_plan
-    redirect_uri = url_for(:controller => 'gyms', :action => 'create_plan', :gym_id => params[:gym_id], :host => request.host)
+    redirect_uri = url_for(:controller => 'gyms', :action => 'create_plan', :gym_id => params[:gym_id], :host => request.host_with_port)
     @gym = Gym.find(params[:gym_id])
     begin
       @gym.create_plan()
@@ -95,9 +95,6 @@ class GymsController < ApplicationController
   # GET /gyms/subscribe_success/1
   def subscribe_success
     @gym = Gym.find(params[:gym_id])
-    if !params[:subscription_id]
-      return redirect_to @gym, alert: "Error - Subscription ID is expected"
-    end
     if (params['error'] && params['error_description'])
       return redirect_to @gym, alert: "Error - #{params['error_description']}"
     end

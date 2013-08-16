@@ -22,8 +22,9 @@ end
 
 gem 'jquery-rails'
 gem 'bcrypt-ruby', '~> 3.0.0', :require => "bcrypt"
-gem 'wepay'
+gem 'wepay', :path => "~/Desktop/Ruby-SDK/"
 gem 'thin'
+gem 'certified'
 gem 'pg', :group => :production
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
