@@ -84,6 +84,7 @@ class GymsController < ApplicationController
 
   def subscribe
     redirect_uri = url_for(:controller => 'gyms', :action => 'subscribe_success', :gym_id => params[:gym_id], :host => request.host_with_port)
+    @gym = Gym.find(params[:gym_id])
     begin
       @subscription = @gym.create_subscription(redirect_uri)
     rescue Exception => e
